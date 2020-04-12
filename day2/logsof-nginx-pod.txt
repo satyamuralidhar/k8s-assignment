@@ -1,0 +1,50 @@
+root@master:~/satya# cat logsof-nginx-pod
+Name:         nginx
+Namespace:    default
+Priority:     0
+Node:         master/10.0.2.15
+Start Time:   Sun, 12 Apr 2020 07:12:09 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.42.1.26
+IPs:
+  IP:  10.42.1.26
+Containers:
+  nginx:
+    Container ID:   containerd://5893bfcbc42c5e78e4490469b57aba0aaa4ad2312b1498ab4172a5b21b0b1675
+    Image:          nginx:latest
+    Image ID:       docker.io/library/nginx@sha256:282530fcb7cd19f3848c7b611043f82ae4be3781cb00105a1d593d7e6286b596
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 12 Apr 2020 07:15:10 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-mlslg (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-mlslg:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-mlslg
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned default/nginx to master
+  Normal  Pulling    5m13s      kubelet, master    Pulling image "nginx:latest"
+  Normal  Pulled     2m14s      kubelet, master    Successfully pulled image "nginx:latest"
+  Normal  Created    2m14s      kubelet, master    Created container nginx
+  Normal  Started    2m13s      kubelet, master    Started container nginx
+
