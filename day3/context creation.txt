@@ -1,0 +1,92 @@
+name space:
+============
+#kubectl get ns
+satya                  Active   20h
+
+create a context:
+==================
+#kubectl config set-context dev --namespace=satya --cluster=default --user=default
+
+use context:
+==============
+#kubectl config use-context dev
+
+create a pod:
+=============
+
+#vim nginx-pod-devcontext.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-dev
+  namespace: satya
+spec:
+  containers:
+  - name: nginx-dev-container
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+#kubectl create -f nginx-pod-devcontext.yaml
+
+
+to know the pod running on context:
+====================================
+
+#kubectl describe pods --namespace=satya --context=dev
+
+output:
+==========
+
+
+
+root@master:~/task# kubectl describe pods --namespace=satya --context=dev
+Name:         nginx-dev
+Namespace:    satya
+Priority:     0
+Node:         master/10.0.2.15
+Start Time:   Sun, 12 Apr 2020 12:09:47 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.42.1.35
+IPs:
+  IP:  10.42.1.35
+Containers:
+  nginx-dev-container:
+    Container ID:   containerd://547c16267f4f5ca983cadd769f4a44e203cac9978005438c40678383f2976cb8
+    Image:          nginx:latest
+    Image ID:       docker.io/library/nginx@sha256:282530fcb7cd19f3848c7b611043f82ae4be3781cb00105a1d593d7e6286b596
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 12 Apr 2020 12:09:54 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-7xjk9 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-7xjk9:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-7xjk9
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned satya/nginx-dev to master
+  Normal  Pulling    7m53s      kubelet, master    Pulling image "nginx:latest"
+  Normal  Pulled     7m48s      kubelet, master    Successfully pulled image "nginx:latest"
+  Normal  Created    7m48s      kubelet, master    Created container nginx-dev-container
+  Normal  Started    7m48s      kubelet, master    Started container nginx-dev-container
