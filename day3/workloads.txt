@@ -1,0 +1,48 @@
+#deamonset
+===========
+#deamonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: 
+  name: fluentd-ds
+spec:
+  selector: 
+    matchLabels:
+      name: fluentd
+  template: 
+    metadata:
+      labels: 
+        name: fluentd
+    spec: 
+      containers:
+      - name: fulentd
+        image: gcr.io/google-containers/fluentd-elasticsearch:1.20
+
+job:
+=======
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hi-satya
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date; echo Hello from the Kubernetes cluster
+          restartPolicy: OnFailure
+
+
+output:
+=========
+
+NAME       SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hi-satya   */1 * * * *   False     0        48s             2m4s
