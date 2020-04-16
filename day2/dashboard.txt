@@ -1,0 +1,47 @@
+depolying a kubernates dashboard:
+================================
+
+GITHUB_URL=https://github.com/kubernetes/dashboard/releases
+VERSION_KUBE_DASHBOARD=$(curl -w '%{url_effective}' -I -L -s -S ${GITHUB_URL}/latest -o /dev/null | sed -e 's|.*/||')
+sudo k3s kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/${VERSION_KUBE_DASHBOARD}/aio/deploy/recommended.yaml
+
+service account creation:
+========================
+
+#satya-sa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: satya
+  namespace: kubernetes-dashboard
+
+rabac creation:
+===============
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: satya
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: satya
+  namespace: kubernetes-dashboard
+
+applying configuration:
+======================
+
+sudo k3s kubectl create -f satya-sa.yml -f satyauser-role.yml
+
+bearer token generation:
+=========================
+
+sudo k3s kubectl -n kubernetes-dashboard describe secret satya-token | grep ^token
+
+sudo k3s kubectl proxy
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
