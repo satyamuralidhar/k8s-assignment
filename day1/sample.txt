@@ -1,0 +1,19 @@
+creating a volumes server:
+==========================
+
+docker volume create servervol
+
+
+creating a volumes client:
+==========================
+
+docker volume create clientvol
+
+
+run a docker image:
+===================
+
+docker run -d -p 8080:8081 -ti --name=tomcat-servervol -v servervol:/serverdata tomcat:latest
+
+
+docker run -d -p 8081:8082 -ti --name=tomcat-clientvol -v clientvol:/clientdata tomcat:latest
